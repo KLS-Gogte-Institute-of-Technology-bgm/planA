@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter no 1"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.398"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.125" />
+
+    <EditText
+        android:id="@+id/editTextNumber3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter No 2"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.398"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber"
+        app:layout_constraintVertical_bias="0.061" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Add"
+        android:text="+"
+        android:textColorLink="#5C2020"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumber3"
+        app:layout_constraintVertical_bias="0.145" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:onClick="Div"
+        android:text="/"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.205" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:onClick="Sub"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Mul"
+        android:text="*"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.595" />
+
+    <EditText
+        android:id="@+id/editTextNumber4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+Java:
+package com.example.mycalculator;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+    public  void  Add(View v){
+        EditText et1=(EditText)  findViewById(R.id.editTextNumber);
+        EditText et2=(EditText)  findViewById(R.id.editTextNumber3);
+        EditText et3=(EditText)  findViewById(R.id.editTextNumber4);
+        int n1=Integer.parseInt(et1.getText().toString());
+        int n2=Integer.parseInt(et2.getText().toString());
+        int res=n1+n2;
+        et3.setText("Total Value "+res);
+
+    }
+    public  void  Sub(View v){
+        EditText et1=(EditText)  findViewById(R.id.editTextNumber);
+        EditText et2=(EditText)  findViewById(R.id.editTextNumber3);
+        EditText et3=(EditText)  findViewById(R.id.editTextNumber4);
+        int n1=Integer.parseInt(et1.getText().toString());
+        int n2=Integer.parseInt(et2.getText().toString());
+        int res=n1-n2;
+        et3.setText("Total Value "+res);
+
+    }
+    public  void  Mul(View v){
+        EditText et1=(EditText)  findViewById(R.id.editTextNumber);
+        EditText et2=(EditText)  findViewById(R.id.editTextNumber3);
+        EditText et3=(EditText)  findViewById(R.id.editTextNumber4);
+        int n1=Integer.parseInt(et1.getText().toString());
+        int n2=Integer.parseInt(et2.getText().toString());
+        int res=n1*n2;
+        et3.setText("Total Value "+res);
+
+    }
+    public  void  Div(View v){
+        EditText et1=(EditText)  findViewById(R.id.editTextNumber);
+        EditText et2=(EditText)  findViewById(R.id.editTextNumber3);
+        EditText et3=(EditText)  findViewById(R.id.editTextNumber4);
+        int n1=Integer.parseInt(et1.getText().toString());
+        int n2=Integer.parseInt(et2.getText().toString());
+        int res=n1/n2;
+        et3.setText("Total Value "+res);
+
+    }
+}
