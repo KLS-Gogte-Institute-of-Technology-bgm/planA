@@ -1,0 +1,145 @@
+Writer
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 50
+struct msg_buffer {
+long mesg_type;
+char mesg_text[100];
+}message;
+int main() {
+key_t key;
+int msgid;
+key = ftok("progfile", 65);
+msgid = msgget(key, 0666 | IPC_CREAT);
+message.mesg_type = 1;
+printf("Write data: \n");
+fgets(message.mesg_text, MAX, stdin);
+msgsnd(msgid, &message, sizeof(message), 0);
+printf("Data sent is : %s\n", message.mesg_text);
+return 0;
+}
+Reader
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 50
+struct msg_buffer {
+long mesg_type;
+char mesg_text[100];
+}message;
+int main() {
+key_t key;
+int msgid;
+key = ftok("progfile", 65);
+msgid = msgget(key, 0666 | IPC_CREAT);
+msgrcv(msgid, &message, sizeof(message), 1, 0);
+printf("Data read is: %s\n", message.mesg_text);
+msgctl(msgid, IPC_RMID, NULL);
+return 0;
+}
+Output
+Writer
+lab2@lab2-virtual-machine:~/Aniket_NP-Lab/TW-1$ gcc TW-1_writer.c
+lab2@lab2-virtual-machine:~/Aniket_NP-Lab/TW-1$ ./a.out
+Write data: Hello World
+Data sent is : Hello World
+Reader
+lab2@lab2-virtual-machine:~/Aniket_NP-Lab/TW-1$ gcc TW-1_reader.c
+lab2@lab2-virtual-machine:~/Aniket_NP-Lab/TW-1$ ./a.out
+Data read is: Hello World
+
+
+
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+int main() {
+int fd[2], n;
+char buffer[100];
+pid_t p;
+pipe(fd);
+p = fork();
+if (p > 0) {
+printf("Parent process pid: %d\n", getppid());
+printf("Child process pid: %d\n", p);
+printf("Passing value child\n");
+write(fd[1], "Hello World!\n", 13);
+}
+else {
+printf("Child process pid: %d\n", getpid());
+printf("Parent process pid: %d\n", getppid());
+n = read(fd[0], buffer, 100);
+printf("Data received by child process: \n");
+write(1, buffer, n);
+}
+return 0;
+}
+
+
+
+
+
+
+TW-2
+Server
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <string.h>
+#define PORT 4444
+int main() {
+int listenfd, connfd;
+struct sockaddr_in servAddr, cliAddr;
+socklen_t clilen;
+char buffer[1024];
+listenfd = socket(AF_INET, SOCK_STREAM, 0);
+printf("[+] Server socket created successfully\n");
+bzero(&servAddr, sizeof(servAddr));
+servAddr.sin_family = AF_INET;
+servAddr.sin_port = htons(PORT);
+servAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+bind(listenfd, (struct sockaddr *) &servAddr, sizeof(servAddr));
+printf("[+] Bind to PORT %d successful\n", PORT);
+listen(listenfd, 5);
+printf("[+] Listening...\n");
+connfd = accept(listenfd, (struct sockaddr *) &cliAddr, &clilen);
+strcpy(buffer, "Hello World!");
+send(connfd, buffer, strlen(buffer), 0);
+printf("[+] Data sent to client: %s\n", buffer);
+printf("[+] Closing the connection\n");
+return 0;
+}
+Client
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#define PORT 4444
+int main() {
+int sockfd;
+struct sockaddr_in servAddr;
+char buffer[1024];
+sockfd = socket(AF_INET, SOCK_STREAM, 0);
+printf("[+] Client socket created successfully\n");
+bzero(&servAddr, sizeof(servAddr));
+servAddr.sin_family = AF_INET;
+servAddr.sin_port = htons(PORT);
+servAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+connect(sockfd, (struct sockaddr *) &servAddr, sizeof(servAddr));
+printf("[+] Connected to server\n");
+recv(sockfd, buffer, 1024, 0);
+printf("[+] Data received from server: %s\n", buffer);
+printf("[+] Closing the connection\n");
+return 0;
+}
